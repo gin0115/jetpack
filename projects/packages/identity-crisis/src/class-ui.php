@@ -28,7 +28,7 @@ class UI {
 		/**
 		 * Action called after initializing Identity Crisis UI.
 		 *
-		 * @since $$next-version$$
+		 * @since 0.6.0
 		 */
 		do_action( 'jetpack_identity_crisis_ui_init' );
 
@@ -54,7 +54,7 @@ class UI {
 				__FILE__,
 				array(
 					'in_footer'  => true,
-					'textdomain' => 'jetpack',
+					'textdomain' => 'jetpack-idc',
 				)
 			);
 			Assets::enqueue_script( 'jp_identity_crisis_banner' );
