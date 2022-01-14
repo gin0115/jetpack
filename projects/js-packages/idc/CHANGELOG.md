@@ -2,6 +2,14 @@
 
 ### This is a list detailing changes for the Jetpack RNA IDC package releases.
 
+## 0.8.1 - 2022-01-11
+### Changed
+- Updated package dependencies.
+
+## 0.8.0 - 2022-01-07
+### Added
+- Display IDC resolution errors.
+
 ## 0.7.1 - 2022-01-04
 ### Changed
 - Updated package dependencies.
