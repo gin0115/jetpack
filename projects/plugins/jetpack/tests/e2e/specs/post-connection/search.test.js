@@ -9,6 +9,7 @@ import {
 	getBlockWidgets,
 	setupBlockWidgets,
 	searchAPIRoute,
+	searchAutoConfig,
 } from '../../helpers/search-helper.js';
 import { prerequisitesBuilder, Plans } from 'jetpack-e2e-commons/env/index.js';
 import { resolveSiteUrl } from 'jetpack-e2e-commons/helpers/utils-helper.cjs';
@@ -28,6 +29,7 @@ test.describe( 'Search', () => {
 			.withPlan( Plans.Complete )
 			.withActiveModules( [ 'search' ] )
 			.build();
+		await searchAutoConfig();
 
 		backupSidebarsWidgets = await getSidebarsWidgets();
 		backupBlockWidgets = await getBlockWidgets();

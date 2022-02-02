@@ -1,6 +1,10 @@
 import { test, expect } from '../../fixtures/base-test.js';
 import { SearchDashboard } from 'jetpack-e2e-commons/pages/wp-admin/index.js';
-import { enableInstantSearch, disableInstantSearch } from '../../helpers/search-helper.js';
+import {
+	enableInstantSearch,
+	disableInstantSearch,
+	searchAutoConfig,
+} from '../../helpers/search-helper.js';
 import { prerequisitesBuilder, Plans } from 'jetpack-e2e-commons/env/index.js';
 import playwrightConfig from '../../playwright.config.cjs';
 
@@ -15,6 +19,7 @@ test.describe( 'Search Dashboard', () => {
 			.withPlan( Plans.Complete )
 			.withActiveModules( [ 'search' ] )
 			.build();
+		await searchAutoConfig();
 
 		await enableInstantSearch();
 		await page.close();

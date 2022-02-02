@@ -70,6 +70,10 @@ export async function setupBlockWidgets( blockWidgets = getBlockWidgetsData() ) 
 	return await setWpOptionData( blockWidgetsOption, blockWidgets, blockWidgetsFilePath );
 }
 
+export async function searchAutoConfig() {
+	return await execWpCommand( 'jetpack-search auto_config --force' );
+}
+
 async function setWpOptionData( optionName, value, tempFilePath ) {
 	fs.writeFileSync( tempFilePath, JSON.stringify( value ) );
 
