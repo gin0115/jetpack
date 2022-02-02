@@ -29,11 +29,11 @@ test.describe( 'Search', () => {
 			.withPlan( Plans.Complete )
 			.withActiveModules( [ 'search' ] )
 			.build();
+		await enableInstantSearch();
 		await searchAutoConfig();
 
 		backupSidebarsWidgets = await getSidebarsWidgets();
 		backupBlockWidgets = await getBlockWidgets();
-		await enableInstantSearch();
 		await setupSidebarsWidgets();
 		await setupSearchWidget();
 		await setupBlockWidgets();

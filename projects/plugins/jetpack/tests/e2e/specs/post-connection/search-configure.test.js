@@ -24,9 +24,8 @@ test.describe( 'Search Configure', () => {
 			.withPlan( Plans.Complete )
 			.withActiveModules( [ 'search' ] )
 			.build();
-		await searchAutoConfig();
-
 		await enableInstantSearch();
+		await searchAutoConfig();
 
 		// initialize the settings we are going to manipulate.
 		await setTheme();
