@@ -36,6 +36,11 @@ class Jetpack_Google_AMP_Analytics {
 			return;
 		}
 
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return;
+		}
+
 		if ( ! Jetpack_Google_Analytics_Options::has_tracking_code() ) {
 			return;
 		}

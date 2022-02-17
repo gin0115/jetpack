@@ -66,6 +66,12 @@ class Jetpack_Tracks_Client {
 	 * @return mixed         True on success, WP_Error on failure
 	 */
 	public static function record_event( $event ) {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return new \WP_Error( 'Tracking is disabled, through the jetpack_allow_tracking filter' );
+		}
+
 		if ( ! self::$terms_of_service ) {
 			self::$terms_of_service = new \Automattic\Jetpack\Terms_Of_Service();
 		}
@@ -198,9 +204,12 @@ class Jetpack_Tracks_Client {
 
 				$anon_id = 'jetpack:' . base64_encode( $binary ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 
+				$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+
 				if ( ! headers_sent()
 					&& ! ( defined( 'REST_REQUEST' ) && REST_REQUEST )
 					&& ! ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST )
+					&& true === $allow_tracking
 				) {
 					setcookie( 'tk_ai', $anon_id );
 				}

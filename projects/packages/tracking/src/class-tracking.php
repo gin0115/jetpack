@@ -86,6 +86,14 @@ class Tracking {
 			);
 		}
 
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			wp_send_json_error(
+				__( 'Tracking is disabled via the jetpack_allow_tracking filter', 'jetpack-tracking' ),
+				403
+			);
+		}
+
 		$tracks_data = array();
 		if ( 'click' === $_REQUEST['tracksEventType'] && isset( $_REQUEST['tracksEventProp'] ) ) {
 			if ( is_array( $_REQUEST['tracksEventProp'] ) ) {
@@ -106,6 +114,11 @@ class Tracking {
 	 * @param boolean $enqueue Also enqueue? defaults to false.
 	 */
 	public static function register_tracks_functions_scripts( $enqueue = false ) {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return;
+		}
 
 		// Register jp-tracks as it is a dependency.
 		wp_register_script(
@@ -142,6 +155,12 @@ class Tracking {
 	 * Enqueue script necessary for tracking.
 	 */
 	public function enqueue_tracks_scripts() {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'jptracks',
 			Assets::get_file_url_for_environment( 'js/tracks-ajax.js', 'js/tracks-ajax.js', __FILE__ ),
@@ -170,6 +189,12 @@ class Tracking {
 	 *                                   set to false, the prefix will be 'jetpack_'.
 	 */
 	public function record_user_event( $event_type, $data = array(), $user = null, $use_product_prefix = true ) {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return false;
+		}
+
 		if ( ! $user ) {
 			$user = wp_get_current_user();
 		}
@@ -203,6 +228,11 @@ class Tracking {
 	 * @return bool true for success | \WP_Error if the event pixel could not be fired
 	 */
 	public function tracks_record_event( $user, $event_name, $properties = array(), $event_timestamp_millis = false ) {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return false;
+		}
 
 		// We don't want to track user events during unit tests/CI runs.
 		if ( $user instanceof \WP_User && 'wptests_capabilities' === $user->cap_key ) {
@@ -252,6 +282,12 @@ class Tracking {
 	 * @return \Jetpack_Tracks_Event|\WP_Error
 	 */
 	private function tracks_build_event_obj( $user, $event_name, $properties = array(), $event_timestamp_millis = false ) {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return new \WP_Error( 'Tracking is disabled, through the jetpack_allow_tracking filter' );
+		}
+
 		$identity = $this->tracks_get_identity( $user->ID );
 
 		$properties['user_lang'] = $user->get( 'WPLANG' );
@@ -312,7 +348,8 @@ class Tracking {
 			add_user_meta( $user_id, 'jetpack_tracks_anon_id', $anon_id, false );
 		}
 
-		if ( ! isset( $_COOKIE['tk_ai'] ) && ! headers_sent() ) {
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( ! isset( $_COOKIE['tk_ai'] ) && ! headers_sent() && true === $allow_tracking ) {
 			setcookie( 'tk_ai', $anon_id );
 		}
 

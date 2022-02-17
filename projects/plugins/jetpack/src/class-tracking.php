@@ -94,7 +94,13 @@ class Tracking {
 		if ( $anon_id ) {
 			$this->tracking->record_user_event( '_aliasUser', array( 'anonId' => $anon_id ) );
 			delete_user_meta( $user_id, 'jetpack_tracks_anon_id' );
-			if ( ! headers_sent() ) {
+
+			$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+			if ( false === $allow_tracking ) {
+				return;
+			}
+
+			if ( ! headers_sent() && true === $allow_tracking ) {
 				setcookie( 'tk_ai', 'expired', time() - 1000 );
 			}
 		}
