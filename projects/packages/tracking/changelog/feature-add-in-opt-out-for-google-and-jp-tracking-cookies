@@ -1,0 +1,4 @@
+Significance: patch
+Type: changed
+
+Added in the jetpack_allow_tracking filter, to opt out of all tracking cookies being added
