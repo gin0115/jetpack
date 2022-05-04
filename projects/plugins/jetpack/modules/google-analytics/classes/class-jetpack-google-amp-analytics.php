@@ -28,11 +28,16 @@ class Jetpack_Google_AMP_Analytics {
 	 * Checks if its AMP request, if WooCommerce is available, if there's tracking code and in tracking is enabled.
 	 */
 	public function maybe_load_hooks() {
+
 		if ( ! class_exists( 'Jetpack_AMP_Support' ) || ! Jetpack_AMP_Support::is_amp_request() ) {
 			return;
 		}
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
+			return;
+		}
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
 			return;
 		}
 

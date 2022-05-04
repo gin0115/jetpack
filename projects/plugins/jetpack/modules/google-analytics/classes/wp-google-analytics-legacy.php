@@ -58,6 +58,12 @@ class Jetpack_Google_Analytics_Legacy {
 	 * Called exclusively by wp_head action
 	 */
 	public function insert_code() {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return;
+		}
+
 		$tracking_id = Jetpack_Google_Analytics_Options::get_tracking_code();
 		if ( empty( $tracking_id ) ) {
 			echo "<!-- Your Google Analytics Plugin is missing the tracking ID -->\r\n";
