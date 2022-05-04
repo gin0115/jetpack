@@ -231,7 +231,7 @@ class Tracking {
 
 		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
 		if ( false === $allow_tracking ) {
-			return false;
+			return new WP_Error( 'tracks_record_event_not_allowed', __( 'Tracks events are not allowed.', 'jetpack-tracking' ) );
 		}
 
 		// We don't want to track user events during unit tests/CI runs.

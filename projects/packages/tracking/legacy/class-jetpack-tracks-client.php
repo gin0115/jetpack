@@ -69,7 +69,7 @@ class Jetpack_Tracks_Client {
 
 		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
 		if ( false === $allow_tracking ) {
-			return new \WP_Error( 'Tracking is disabled, through the jetpack_allow_tracking filter' );
+			return new \WP_Error( 'Tracking is disabled', 'Disabled via the "jetpack_allow_tracking" filter', 400 );
 		}
 
 		if ( ! self::$terms_of_service ) {

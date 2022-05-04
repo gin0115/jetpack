@@ -88,6 +88,12 @@ class Tracking {
 	 * @access public
 	 */
 	public function jetpack_user_authorized() {
+
+		$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
+		if ( false === $allow_tracking ) {
+			return;
+		}
+
 		$user_id = get_current_user_id();
 		$anon_id = get_user_meta( $user_id, 'jetpack_tracks_anon_id', true );
 
@@ -95,12 +101,7 @@ class Tracking {
 			$this->tracking->record_user_event( '_aliasUser', array( 'anonId' => $anon_id ) );
 			delete_user_meta( $user_id, 'jetpack_tracks_anon_id' );
 
-			$allow_tracking = apply_filters( 'jetpack_allow_tracking', true );
-			if ( false === $allow_tracking ) {
-				return;
-			}
-
-			if ( ! headers_sent() && true === $allow_tracking ) {
+			if ( ! headers_sent() ) {
 				setcookie( 'tk_ai', 'expired', time() - 1000 );
 			}
 		}

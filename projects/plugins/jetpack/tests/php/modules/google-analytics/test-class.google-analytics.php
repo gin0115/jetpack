@@ -163,4 +163,53 @@ class WP_Test_Jetpack_Google_Analytics extends WP_UnitTestCase {
 			$actual
 		);
 	}
+
+	/**
+	 * Verify that it is possible to disable google analytics via universal class adding tracking script to header with the help of a filter.
+	 */
+	public function test_can_disable_google_analytics_universal_in_header_via_filter() {
+		// Backup existing wp_head callbacks and clear.
+		$global_backup = clone $GLOBALS['wp_filter']['wp_head'];
+		unset( $GLOBALS['wp_filter']['wp_head'] );
+
+		// Set to disable Analytics via filter.
+		add_filter( 'jetpack_allow_tracking', '__return_false' );
+
+		// Add hooks and run the test.
+		new Jetpack_Google_Analytics_Universal();
+		ob_start();
+		do_action( 'wp_head' );
+		$header = ob_get_clean();
+
+		$this->assertSame( '', $header );
+
+		// Restore wp_head callbacks.
+		$GLOBALS['wp_filter']['wp_head'] = $global_backup;
+		add_filter( 'jetpack_allow_tracking', '__return_true' );
+
+	}
+
+	/**
+	 * Verify that it is possible to disable google analytics via legacy class adding tracking script to header with the help of a filter.
+	 */
+	public function test_can_disable_google_analytics_legacy_in_header_via_filter() {
+		// Backup existing wp_head callbacks and clear.
+		$global_backup = clone $GLOBALS['wp_filter']['wp_head'];
+		unset( $GLOBALS['wp_filter']['wp_head'] );
+
+		// Set to disable Analytics via filter.
+		add_filter( 'jetpack_allow_tracking', '__return_false' );
+
+		// Add hooks and run the test.
+		new Jetpack_Google_Analytics_Legacy();
+		ob_start();
+		do_action( 'wp_head' );
+		$header = ob_get_clean();
+
+		$this->assertSame( '', $header );
+
+		// Restore wp_head callbacks.
+		$GLOBALS['wp_filter']['wp_head'] = $global_backup;
+		add_filter( 'jetpack_allow_tracking', '__return_true' );
+	}
 }
